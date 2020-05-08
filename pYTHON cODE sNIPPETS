@@ -1,0 +1,189 @@
+download image from url
+
+import requests
+import os
+
+def download_image(url, dir):
+    if url.endswith(('.jpg', '.jpeg', '.png', '.gif')):
+        img = requests.get(url).content
+        file_name = os.path.basename(url)
+        with open(f'{dir}{file_name}', 'wb') as f:
+            f.write(img)
+
+download_image('https://impshum.co.uk/red.png', './')
+
+Download mp4 from url
+
+import requests
+import os
+
+def download_mp4(url, dir):
+    mp4 = requests.get(url)
+    file_name = os.path.basename(url)
+    with open(f'{dir}{file_name}', 'wb') as f:
+        for chunk in mp4.iter_content(chunk_size=255):
+            if chunk:
+                f.write(chunk)
+
+download_mp4('https://archive.org/download/user-mp4-test/ac3.mp4', './')
+
+Get random images from a folder
+
+from random import sample
+import os
+
+def get_random_images(dir, count):
+    return sample([x for x in os.listdir(dir) if x.endswith(('jpg', 'jpeg', 'png', 'gif'))], count)
+
+get_random_images('images', 3)
+
+BeautifulSoup starter script
+[tutorial]
+
+from bs4 import BeautifulSoup
+from fake_useragent import UserAgent
+import requests
+
+ua = UserAgent()
+
+def lovely_soup(url):
+    r = requests.get(url, headers={'User-Agent': ua.chrome})
+    return BeautifulSoup(r.text, 'lxml')
+
+soup = lovely_soup(url)
+
+Display notification on mac
+
+import os
+
+def notify(title, text):
+    os.system("""
+        osascript -e 'display notification "{}" with title "{}"'
+        """.format(text, title))
+
+notify('title', 'content')
+
+Create centered thumbnail from image
+
+from PIL import Image
+
+def create_thumbnail(infile, outfile, width, height):
+    thumb = width, height
+    img = Image.open(infile)
+    width, height = img.size
+
+    if width > height:
+        delta = width - height
+        left = int(delta / 2)
+        upper = 0
+        right = height + left
+        lower = height
+    else:
+        delta = height - width
+        left = 0
+        upper = int(delta / 2)
+        right = width
+        lower = width + upper
+
+    img = img.crop((left, upper, right, lower))
+    img.thumbnail(thumb, Image.ANTIALIAS)
+    img.save(outfile)
+
+create_thumbnail('file.jpg', 'file_thumb.jpg', 300, 300)
+
+Add to pickledb if not exists
+[tutorial]
+
+import pickledb
+
+db = pickledb.load(db_file, False)
+
+def add_to_db(key, value):
+    if not db.exists(key):
+        db.set(key, value)
+        db.dump()
+        return True
+
+add_to_db('key', 'value')
+
+Get string between characters
+
+def get_between(s, start, end):
+    return s[s.find(start) + len(start):s.rfind(end)].strip()
+
+get_between('abc', 'a', 'c')
+
+Print in colour
+[tutorial]
+
+class C:
+    W, G, R, P, Y, C = '\033[0m', '\033[92m', '\033[91m', '\033[95m', '\033[93m', '\033[36m'
+
+print(f'{C.G}green{C.W}')
+
+Get JSON from url
+[tutorial]
+
+import requests
+
+data = requests.get(url).json()
+
+Print human readable date from epoch time
+
+import time
+
+def get_readable_date(epoch):
+    return time.strftime("%a %-d %b %Y %H:%M", time.gmtime(epoch))
+
+get_readable_date(12345)
+
+The simple run again loop
+
+def run_again():
+    if 'y' in input('Run again (y/N): ').lower():
+        run_again()
+
+run_again()
+
+Handle keyboard interrupt (Ctrl + C)
+
+try:
+    # DO STUFF HERE
+except KeyboardInterrupt:
+    print('stopped')
+finally:
+    # DO STUFF HERE
+    print('Exiting')
+
+Read the news
+
+from GoogleNews import GoogleNews
+
+googlenews = GoogleNews()
+
+def get_news(query):
+    googlenews.search(query)
+    results = googlenews.result()
+    googlenews.clear()
+    return results
+
+get_news('doom and gloom')
+
+Find all urls in string
+
+import re
+
+def find_urls(s):
+    return re.findall(r'(https?://\S+)', s)
+
+find_urls('Visit this website https://recycledrobot.com')
+
+Merge dictionaries
+
+x = {'a': 1, 'b': 2}
+y = {'b': 3, 'c': 4}
+
+z = {**x, **y}
+
+Thanks for readi
+
